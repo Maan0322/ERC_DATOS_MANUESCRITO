@@ -347,6 +347,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources"><strong>Data Sources</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-registros-duplicados"><strong>Verificación de registros duplicados:</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-lugares-de-tamizajes"><strong>Verificación de lugares de tamizajes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagrama-de-flujo-limpieza-de-datos"><strong>Diagrama de Flujo Limpieza de Datos</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manipulacion-de-la-base-de-datos-segun-recomendaciones"><strong>Manipulación de la base de datos según recomendaciones:</strong></a></li>
 </ul>
 </li>
@@ -1005,7 +1006,7 @@ memory usage: 657.4+ KB
 </div>
 </div>
 <p>La base de datos consta de <strong>1357 registros</strong> y 62 variables.</p>
-<p>La doctora inicia el artículo con una base de datos que incluye a <strong>1590 individuos</strong>. Esta cantidad coincide con los registros de la base de datos del cuestionario_1, una base de datos dada anteriormente por la clínica, pero la base de datos fue actualizada debiido a que contaba con 258 registros duplicados. Además, no sería correcto afirmar que se cuentan con esa cantidad de individuos sin haber verificado anteriormente los registros duplicados, por lo que los datos mencionados podrían ser erróneos.</p>
+<p>La doctora inicia el artículo con una base de datos que incluye a <strong>1590 individuos</strong>. Esta cantidad coincide con los registros de la base de datos del cuestionario_1, una base de datos dada anteriormente por la clínica, pero la base de datos fue actualizada debido a que contaba con 258 registros duplicados. Además, no sería correcto afirmar que se cuentan con esa cantidad de individuos sin haber verificado anteriormente los registros duplicados, por lo que los datos mencionados podrían ser erróneos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Presion_Sistolica	&gt; 130&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Presion_Sistolica	&gt; 130&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
@@ -1254,16 +1255,42 @@ memory usage: 657.4+ KB
 <p>Rural communities included San Basilio de Palenque (Bolívar), San José de Saco and <strong>Lomita Arena (Atlántico)</strong>, and María la Baja (Bolívar).
 Urban sampling included Afro-descendant neighborhoods in <strong>Cartagena (Bolívar)</strong>, Barranquilla (Atlántico), <strong>Maicao (La Guajira)</strong>, and <strong>Magdalena</strong>. In Cartagena, areas such as <strong>Cerro de la Popa</strong> have long been inhabited by Afro-descendant populations who, despite conditions of socioeconomic marginalization, have preserved cultural traditions. Similarly, in Barranquilla, neighborhoods such as <strong>Nueva Colombia</strong> and <strong>El Valle</strong> in the southwestern part of the city represent important sites of cultural resilience and identity.</p>
 <p>Las ciudades/municipios resaltados no se encuentran en la base de datos.</p>
-<p><strong>Individuos mayores a 18 años</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Edad&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">18</span><span class="p">]</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Esto crea una serie donde el índice es el Departamento</span>
+<span class="n">relacion</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Departamento_Tamizaje&#39;</span><span class="p">)[</span><span class="s1">&#39;Municipio_Tamizaje&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+<span class="c1"># Para verlo de forma estética en una tabla</span>
+<span class="k">for</span> <span class="n">depto</span><span class="p">,</span> <span class="n">municipios</span> <span class="ow">in</span> <span class="n">relacion</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;** </span><span class="si">{</span><span class="n">depto</span><span class="si">}</span><span class="s2"> **&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">municipios</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1343
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>** ATLANTICO **
+BARRANQUILLA, SAN JOSE DE SACO
+
+** BOLIVAR **
+MARIA LA BAJA, PALENQUE, LOMITA ARENA, PONTEZUELA
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Individuos mayores a 18 años</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El valor de la muestra hasta ahora </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El número de personas menores de 18 años es </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Edad&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">18</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Edad&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">18</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;la muestra excluyendo a los menores de 18 años quedo con </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> registros&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>El valor de la muestra hasta ahora 1356
+El número de personas menores de 18 años es 13
+la muestra excluyendo a los menores de 18 años quedo con 1343 registros
 </pre></div>
 </div>
 </div>
@@ -1284,6 +1311,84 @@ Urban sampling included Afro-descendant neighborhoods in <strong>Cartagena (Bol�
 </div>
 </div>
 <p>Se supone que la observación excluida es la que tiene la categoría “N.d.”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Regimen_Salud&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;N.d.&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GRUPO</th>
+      <th>Departamento_Tamizaje</th>
+      <th>Municipio_Tamizaje</th>
+      <th>Edad</th>
+      <th>Genero</th>
+      <th>Escolaridad</th>
+      <th>Regimen_Salud</th>
+      <th>Ocupacion</th>
+      <th>Medicacion_Diabetes</th>
+      <th>Diabetes_Embarazo</th>
+      <th>...</th>
+      <th>TFG_CDK_EPI</th>
+      <th>TFG_Edad</th>
+      <th>Presion_Sistolica</th>
+      <th>Presion_Diastolica</th>
+      <th>Creatinina_Alta</th>
+      <th>Presion_Sistolica\t&gt; 130</th>
+      <th>Presion_Diastolica &gt; 90</th>
+      <th>Categoria_Talla</th>
+      <th>Categoria_Peso</th>
+      <th>Categoria_IMC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1233</th>
+      <td>AFRODESCENDIENTE</td>
+      <td>BOLIVAR</td>
+      <td>PALENQUE</td>
+      <td>58</td>
+      <td>Femenino</td>
+      <td>No  escolarizado</td>
+      <td>N.d.</td>
+      <td>Desempleado</td>
+      <td>No</td>
+      <td>No</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>120.0</td>
+      <td>87.0</td>
+      <td>No</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.61-1.70</td>
+      <td>41-60</td>
+      <td>Normal</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 62 columns</p>
+</div></div></div>
+</div>
 <p><strong>Observaciones con valores anómalos en la variable ‘Peso’</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1891,35 +1996,170 @@ Urban sampling included Afro-descendant neighborhoods in <strong>Cartagena (Bol�
 <p>Note que existen 15 registros con esta anomalía, sin haber eliminado las anomalías anteriores.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Peso&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">35</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">15</span><span class="p">),[</span><span class="s2">&quot;Peso&quot;</span><span class="p">,</span><span class="s2">&quot;IMC&quot;</span><span class="p">,</span><span class="s2">&quot;Talla&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Peso</th>
+      <th>IMC</th>
+      <th>Talla</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>50</th>
+      <td>31</td>
+      <td>11.959415</td>
+      <td>1.61</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>24</td>
+      <td>9.144947</td>
+      <td>1.62</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>31</td>
+      <td>12.576575</td>
+      <td>1.57</td>
+    </tr>
+    <tr>
+      <th>769</th>
+      <td>31</td>
+      <td>11.959415</td>
+      <td>1.61</td>
+    </tr>
+    <tr>
+      <th>795</th>
+      <td>31</td>
+      <td>12.576575</td>
+      <td>1.57</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note que los 5 registros que cumplen con el peso <span class="math notranslate nohighlight">\(&lt; 35kg\)</span> tambien cumplen con la anomalia de tener un IMC <span class="math notranslate nohighlight">\(&lt;15kg/m^2\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Peso&quot;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">35</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">15</span><span class="p">),[</span><span class="s2">&quot;Peso&quot;</span><span class="p">,</span><span class="s2">&quot;IMC&quot;</span><span class="p">,</span><span class="s2">&quot;Talla&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Peso</th>
+      <th>IMC</th>
+      <th>Talla</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>55</th>
+      <td>35</td>
+      <td>10.923504</td>
+      <td>1.79</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>42</td>
+      <td>12.962963</td>
+      <td>1.80</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>46</td>
+      <td>14.682882</td>
+      <td>1.77</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>45</td>
+      <td>14.202752</td>
+      <td>1.78</td>
+    </tr>
+    <tr>
+      <th>378</th>
+      <td>45</td>
+      <td>14.363689</td>
+      <td>1.77</td>
+    </tr>
+    <tr>
+      <th>434</th>
+      <td>40</td>
+      <td>14.172336</td>
+      <td>1.68</td>
+    </tr>
+    <tr>
+      <th>531</th>
+      <td>40</td>
+      <td>14.342572</td>
+      <td>1.67</td>
+    </tr>
+    <tr>
+      <th>782</th>
+      <td>42</td>
+      <td>12.962963</td>
+      <td>1.80</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>46</td>
+      <td>14.682882</td>
+      <td>1.77</td>
+    </tr>
+    <tr>
+      <th>1040</th>
+      <td>40</td>
+      <td>14.172336</td>
+      <td>1.68</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Esto nos deja con 10 individuos que cumplen exclusivamente con el criterio de un IMC &lt; 15 <span class="math notranslate nohighlight">\(kg/m^2\)</span>, debido a que presentan un peso significativamente bajo en relación con su estatura.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Regimen_Salud&#39;</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;N.d.&#39;</span><span class="p">]</span>
-<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peso&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">35</span><span class="p">]</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1337
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">IMC_BAJO</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;IMC&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">15</span><span class="p">]</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">IMC_BAJO</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
-</pre></div>
-</div>
-</div>
-</div>
-<p>Y, luego de eliminar las anomalías anteriores, solo existen 10 registros con esta condición.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;IMC&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">15</span><span class="p">]</span>
+<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Peso&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">35</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">15</span><span class="p">))</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">15</span><span class="p">)]</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1930,7 +2170,34 @@ Urban sampling included Afro-descendant neighborhoods in <strong>Cartagena (Bol�
 </div>
 </div>
 </div>
-<p>Finalmente, la base de datos constaría de <strong>1327 individuos</strong>.</p>
+<p>En total, se procedio a eliminar 16 registros unicos consolidando una muestra de <strong>1327 individuos</strong>.</p>
+</section>
+<section id="diagrama-de-flujo-limpieza-de-datos">
+<h3><strong>Diagrama de Flujo Limpieza de Datos</strong><a class="headerlink" href="#diagrama-de-flujo-limpieza-de-datos" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span>
+
+<span class="n">dot</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Flujo de Limpieza de Datos&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;TB&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;8,5&#39;</span><span class="p">)</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Base de Datos Clínica</span><span class="se">\n</span><span class="s1">(n = 1357)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Eliminación de Duplicados</span><span class="se">\n</span><span class="s1">(n = 1356)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;Exclusión por Edad (&lt; 18 años)</span><span class="se">\n</span><span class="s1">(n = 1343)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Muestra Final Consolidada</span><span class="se">\n</span><span class="s1">(n = 1327)&#39;</span><span class="p">)</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -1 duplicado&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -13 menores de edad&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;-16 registros:</span><span class="se">\n</span><span class="s1">(1 Régimen, 5 Peso &lt; 35kg,</span><span class="se">\n</span><span class="s1">10 IMC &lt; 15kg/m² exclusivos)&#39;</span><span class="p">)</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;flujo_limpieza&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6ab075961d8c03621271d4045daaee15ed44d7be94b645d34d5bb873ee73cf07.svg" src="_images/6ab075961d8c03621271d4045daaee15ed44d7be94b645d34d5bb873ee73cf07.svg" /></div>
+</div>
 </section>
 <section id="manipulacion-de-la-base-de-datos-segun-recomendaciones">
 <h3><strong>Manipulación de la base de datos según recomendaciones:</strong><a class="headerlink" href="#manipulacion-de-la-base-de-datos-segun-recomendaciones" title="Permalink to this heading">#</a></h3>
@@ -1949,7 +2216,9 @@ Urban sampling included Afro-descendant neighborhoods in <strong>Cartagena (Bol�
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\seaborn\utils.py:61: UserWarning: Glyph 9 (	) missing from font(s) DejaVu Sans.
   fig.canvas.draw()
-C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 9 (	) missing from font(s) DejaVu Sans.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 9 (	) missing from font(s) DejaVu Sans.
   fig.canvas.print_figure(bytes_io, **kw)
 </pre></div>
 </div>
@@ -2073,33 +2342,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_9a66c">
+<table id="T_1929b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_9a66c_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_9a66c_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_9a66c_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_1929b_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_1929b_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_1929b_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_9a66c_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_9a66c_row0_col0" class="data row0 col0" >Secundaria-Bachiller</td>
-      <td id="T_9a66c_row0_col1" class="data row0 col1" >467</td>
-      <td id="T_9a66c_row0_col2" class="data row0 col2" >35.190000</td>
+      <th id="T_1929b_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_1929b_row0_col0" class="data row0 col0" >Secundaria-Bachiller</td>
+      <td id="T_1929b_row0_col1" class="data row0 col1" >467</td>
+      <td id="T_1929b_row0_col2" class="data row0 col2" >35.190000</td>
     </tr>
     <tr>
-      <th id="T_9a66c_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_9a66c_row1_col0" class="data row1 col0" >No_escolarizado-Primaria</td>
-      <td id="T_9a66c_row1_col1" class="data row1 col1" >458</td>
-      <td id="T_9a66c_row1_col2" class="data row1 col2" >34.510000</td>
+      <th id="T_1929b_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_1929b_row1_col0" class="data row1 col0" >No_escolarizado-Primaria</td>
+      <td id="T_1929b_row1_col1" class="data row1 col1" >458</td>
+      <td id="T_1929b_row1_col2" class="data row1 col2" >34.510000</td>
     </tr>
     <tr>
-      <th id="T_9a66c_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_9a66c_row2_col0" class="data row2 col0" >Educación_Superior</td>
-      <td id="T_9a66c_row2_col1" class="data row2 col1" >402</td>
-      <td id="T_9a66c_row2_col2" class="data row2 col2" >30.290000</td>
+      <th id="T_1929b_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_1929b_row2_col0" class="data row2 col0" >Educación_Superior</td>
+      <td id="T_1929b_row2_col1" class="data row2 col1" >402</td>
+      <td id="T_1929b_row2_col2" class="data row2 col2" >30.290000</td>
     </tr>
   </tbody>
 </table>
@@ -2126,27 +2395,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_6d647">
+<table id="T_692af">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_6d647_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_6d647_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_6d647_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_692af_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_692af_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_692af_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_6d647_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_6d647_row0_col0" class="data row0 col0" >Subsidiado-No_Tiene</td>
-      <td id="T_6d647_row0_col1" class="data row0 col1" >971</td>
-      <td id="T_6d647_row0_col2" class="data row0 col2" >73.170000</td>
+      <th id="T_692af_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_692af_row0_col0" class="data row0 col0" >Subsidiado-No_Tiene</td>
+      <td id="T_692af_row0_col1" class="data row0 col1" >971</td>
+      <td id="T_692af_row0_col2" class="data row0 col2" >73.170000</td>
     </tr>
     <tr>
-      <th id="T_6d647_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_6d647_row1_col0" class="data row1 col0" >Contributivo-Especial</td>
-      <td id="T_6d647_row1_col1" class="data row1 col1" >356</td>
-      <td id="T_6d647_row1_col2" class="data row1 col2" >26.830000</td>
+      <th id="T_692af_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_692af_row1_col0" class="data row1 col0" >Contributivo-Especial</td>
+      <td id="T_692af_row1_col1" class="data row1 col1" >356</td>
+      <td id="T_692af_row1_col2" class="data row1 col2" >26.830000</td>
     </tr>
   </tbody>
 </table>
@@ -2174,33 +2443,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_f26bc">
+<table id="T_c29ad">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_f26bc_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_f26bc_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_f26bc_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_c29ad_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_c29ad_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_c29ad_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_f26bc_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_f26bc_row0_col0" class="data row0 col0" >Consumo adecuado</td>
-      <td id="T_f26bc_row0_col1" class="data row0 col1" >763</td>
-      <td id="T_f26bc_row0_col2" class="data row0 col2" >57.500000</td>
+      <th id="T_c29ad_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_c29ad_row0_col0" class="data row0 col0" >Consumo adecuado</td>
+      <td id="T_c29ad_row0_col1" class="data row0 col1" >763</td>
+      <td id="T_c29ad_row0_col2" class="data row0 col2" >57.500000</td>
     </tr>
     <tr>
-      <th id="T_f26bc_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_f26bc_row1_col0" class="data row1 col0" >No toma nada</td>
-      <td id="T_f26bc_row1_col1" class="data row1 col1" >508</td>
-      <td id="T_f26bc_row1_col2" class="data row1 col2" >38.280000</td>
+      <th id="T_c29ad_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_c29ad_row1_col0" class="data row1 col0" >No toma nada</td>
+      <td id="T_c29ad_row1_col1" class="data row1 col1" >508</td>
+      <td id="T_c29ad_row1_col2" class="data row1 col2" >38.280000</td>
     </tr>
     <tr>
-      <th id="T_f26bc_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_f26bc_row2_col0" class="data row2 col0" >Consumo elevado</td>
-      <td id="T_f26bc_row2_col1" class="data row2 col1" >56</td>
-      <td id="T_f26bc_row2_col2" class="data row2 col2" >4.220000</td>
+      <th id="T_c29ad_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_c29ad_row2_col0" class="data row2 col0" >Consumo elevado</td>
+      <td id="T_c29ad_row2_col1" class="data row2 col1" >56</td>
+      <td id="T_c29ad_row2_col2" class="data row2 col2" >4.220000</td>
     </tr>
   </tbody>
 </table>
@@ -2228,45 +2497,45 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_78ffa">
+<table id="T_1d7ef">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_78ffa_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_78ffa_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_78ffa_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_1d7ef_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_1d7ef_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_1d7ef_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_78ffa_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_78ffa_row0_col0" class="data row0 col0" >Nunca</td>
-      <td id="T_78ffa_row0_col1" class="data row0 col1" >876</td>
-      <td id="T_78ffa_row0_col2" class="data row0 col2" >66.010000</td>
+      <th id="T_1d7ef_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_1d7ef_row0_col0" class="data row0 col0" >Nunca</td>
+      <td id="T_1d7ef_row0_col1" class="data row0 col1" >876</td>
+      <td id="T_1d7ef_row0_col2" class="data row0 col2" >66.010000</td>
     </tr>
     <tr>
-      <th id="T_78ffa_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_78ffa_row1_col0" class="data row1 col0" >Consumo_Ocasional</td>
-      <td id="T_78ffa_row1_col1" class="data row1 col1" >349</td>
-      <td id="T_78ffa_row1_col2" class="data row1 col2" >26.300000</td>
+      <th id="T_1d7ef_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_1d7ef_row1_col0" class="data row1 col0" >Consumo_Ocasional</td>
+      <td id="T_1d7ef_row1_col1" class="data row1 col1" >349</td>
+      <td id="T_1d7ef_row1_col2" class="data row1 col2" >26.300000</td>
     </tr>
     <tr>
-      <th id="T_78ffa_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_78ffa_row2_col0" class="data row2 col0" >Consumo_Frecuente</td>
-      <td id="T_78ffa_row2_col1" class="data row2 col1" >96</td>
-      <td id="T_78ffa_row2_col2" class="data row2 col2" >7.230000</td>
+      <th id="T_1d7ef_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_1d7ef_row2_col0" class="data row2 col0" >Consumo_Frecuente</td>
+      <td id="T_1d7ef_row2_col1" class="data row2 col1" >96</td>
+      <td id="T_1d7ef_row2_col2" class="data row2 col2" >7.230000</td>
     </tr>
     <tr>
-      <th id="T_78ffa_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_78ffa_row3_col0" class="data row3 col0" >Consumo_Habitual</td>
-      <td id="T_78ffa_row3_col1" class="data row3 col1" >5</td>
-      <td id="T_78ffa_row3_col2" class="data row3 col2" >0.380000</td>
+      <th id="T_1d7ef_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_1d7ef_row3_col0" class="data row3 col0" >Consumo_Habitual</td>
+      <td id="T_1d7ef_row3_col1" class="data row3 col1" >5</td>
+      <td id="T_1d7ef_row3_col2" class="data row3 col2" >0.380000</td>
     </tr>
     <tr>
-      <th id="T_78ffa_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_78ffa_row4_col0" class="data row4 col0" >Casi diario</td>
-      <td id="T_78ffa_row4_col1" class="data row4 col1" >1</td>
-      <td id="T_78ffa_row4_col2" class="data row4 col2" >0.080000</td>
+      <th id="T_1d7ef_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_1d7ef_row4_col0" class="data row4 col0" >Casi diario</td>
+      <td id="T_1d7ef_row4_col1" class="data row4 col1" >1</td>
+      <td id="T_1d7ef_row4_col2" class="data row4 col2" >0.080000</td>
     </tr>
   </tbody>
 </table>
@@ -2297,33 +2566,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_2a8b5">
+<table id="T_74aaa">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_2a8b5_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_2a8b5_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_2a8b5_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_74aaa_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_74aaa_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_74aaa_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_2a8b5_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_2a8b5_row0_col0" class="data row0 col0" >Atención tardía</td>
-      <td id="T_2a8b5_row0_col1" class="data row0 col1" >546</td>
-      <td id="T_2a8b5_row0_col2" class="data row0 col2" >41.150000</td>
+      <th id="T_74aaa_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_74aaa_row0_col0" class="data row0 col0" >Atención tardía</td>
+      <td id="T_74aaa_row0_col1" class="data row0 col1" >546</td>
+      <td id="T_74aaa_row0_col2" class="data row0 col2" >41.150000</td>
     </tr>
     <tr>
-      <th id="T_2a8b5_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_2a8b5_row1_col0" class="data row1 col0" >Atención intermedia</td>
-      <td id="T_2a8b5_row1_col1" class="data row1 col1" >429</td>
-      <td id="T_2a8b5_row1_col2" class="data row1 col2" >32.330000</td>
+      <th id="T_74aaa_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_74aaa_row1_col0" class="data row1 col0" >Atención intermedia</td>
+      <td id="T_74aaa_row1_col1" class="data row1 col1" >429</td>
+      <td id="T_74aaa_row1_col2" class="data row1 col2" >32.330000</td>
     </tr>
     <tr>
-      <th id="T_2a8b5_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_2a8b5_row2_col0" class="data row2 col0" >Atención reciente</td>
-      <td id="T_2a8b5_row2_col1" class="data row2 col1" >352</td>
-      <td id="T_2a8b5_row2_col2" class="data row2 col2" >26.530000</td>
+      <th id="T_74aaa_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_74aaa_row2_col0" class="data row2 col0" >Atención reciente</td>
+      <td id="T_74aaa_row2_col1" class="data row2 col1" >352</td>
+      <td id="T_74aaa_row2_col2" class="data row2 col2" >26.530000</td>
     </tr>
   </tbody>
 </table>
@@ -2351,27 +2620,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_8589a">
+<table id="T_06513">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_8589a_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_8589a_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_8589a_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_06513_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_06513_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_06513_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_8589a_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_8589a_row0_col0" class="data row0 col0" >Sin dificultad</td>
-      <td id="T_8589a_row0_col1" class="data row0 col1" >811</td>
-      <td id="T_8589a_row0_col2" class="data row0 col2" >61.120000</td>
+      <th id="T_06513_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_06513_row0_col0" class="data row0 col0" >Sin dificultad</td>
+      <td id="T_06513_row0_col1" class="data row0 col1" >811</td>
+      <td id="T_06513_row0_col2" class="data row0 col2" >61.120000</td>
     </tr>
     <tr>
-      <th id="T_8589a_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_8589a_row1_col0" class="data row1 col0" >Con dificultad</td>
-      <td id="T_8589a_row1_col1" class="data row1 col1" >516</td>
-      <td id="T_8589a_row1_col2" class="data row1 col2" >38.880000</td>
+      <th id="T_06513_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_06513_row1_col0" class="data row1 col0" >Con dificultad</td>
+      <td id="T_06513_row1_col1" class="data row1 col1" >516</td>
+      <td id="T_06513_row1_col2" class="data row1 col2" >38.880000</td>
     </tr>
   </tbody>
 </table>
@@ -2401,27 +2670,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_5c60d">
+<table id="T_07677">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_5c60d_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_5c60d_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_5c60d_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_07677_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_07677_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_07677_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_5c60d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_5c60d_row0_col0" class="data row0 col0" >Medicina General</td>
-      <td id="T_5c60d_row0_col1" class="data row0 col1" >1120</td>
-      <td id="T_5c60d_row0_col2" class="data row0 col2" >84.400000</td>
+      <th id="T_07677_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_07677_row0_col0" class="data row0 col0" >Medicina General</td>
+      <td id="T_07677_row0_col1" class="data row0 col1" >1120</td>
+      <td id="T_07677_row0_col2" class="data row0 col2" >84.400000</td>
     </tr>
     <tr>
-      <th id="T_5c60d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_5c60d_row1_col0" class="data row1 col0" >Especialista</td>
-      <td id="T_5c60d_row1_col1" class="data row1 col1" >207</td>
-      <td id="T_5c60d_row1_col2" class="data row1 col2" >15.600000</td>
+      <th id="T_07677_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_07677_row1_col0" class="data row1 col0" >Especialista</td>
+      <td id="T_07677_row1_col1" class="data row1 col1" >207</td>
+      <td id="T_07677_row1_col2" class="data row1 col2" >15.600000</td>
     </tr>
   </tbody>
 </table>
@@ -2434,7 +2703,8 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
     <span class="s2">&quot;A+&quot;</span><span class="p">:</span> <span class="s2">&quot;No O&quot;</span><span class="p">,</span>
     <span class="s2">&quot;A-&quot;</span><span class="p">:</span> <span class="s2">&quot;No O&quot;</span><span class="p">,</span>
     <span class="s2">&quot;AB+&quot;</span><span class="p">:</span> <span class="s2">&quot;No O&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;B+&quot;</span><span class="p">:</span> <span class="s2">&quot;No O&quot;</span>
+    <span class="s2">&quot;B+&quot;</span><span class="p">:</span> <span class="s2">&quot;No O&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;B-&quot;</span><span class="p">:</span><span class="s2">&quot;No O&quot;</span>
 <span class="p">})</span>
 </pre></div>
 </div>
@@ -2449,45 +2719,38 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_9a64e">
+<table id="T_3d02f">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_9a64e_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_9a64e_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_9a64e_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_3d02f_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_3d02f_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_3d02f_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_9a64e_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_9a64e_row0_col0" class="data row0 col0" >O+</td>
-      <td id="T_9a64e_row0_col1" class="data row0 col1" >847</td>
-      <td id="T_9a64e_row0_col2" class="data row0 col2" >63.830000</td>
+      <th id="T_3d02f_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_3d02f_row0_col0" class="data row0 col0" >O+</td>
+      <td id="T_3d02f_row0_col1" class="data row0 col1" >847</td>
+      <td id="T_3d02f_row0_col2" class="data row0 col2" >63.830000</td>
     </tr>
     <tr>
-      <th id="T_9a64e_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_9a64e_row1_col0" class="data row1 col0" >No O</td>
-      <td id="T_9a64e_row1_col1" class="data row1 col1" >449</td>
-      <td id="T_9a64e_row1_col2" class="data row1 col2" >33.840000</td>
+      <th id="T_3d02f_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_3d02f_row1_col0" class="data row1 col0" >No O</td>
+      <td id="T_3d02f_row1_col1" class="data row1 col1" >459</td>
+      <td id="T_3d02f_row1_col2" class="data row1 col2" >34.590000</td>
     </tr>
     <tr>
-      <th id="T_9a64e_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_9a64e_row2_col0" class="data row2 col0" >O-</td>
-      <td id="T_9a64e_row2_col1" class="data row2 col1" >21</td>
-      <td id="T_9a64e_row2_col2" class="data row2 col2" >1.580000</td>
-    </tr>
-    <tr>
-      <th id="T_9a64e_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_9a64e_row3_col0" class="data row3 col0" >B-</td>
-      <td id="T_9a64e_row3_col1" class="data row3 col1" >10</td>
-      <td id="T_9a64e_row3_col2" class="data row3 col2" >0.750000</td>
+      <th id="T_3d02f_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_3d02f_row2_col0" class="data row2 col0" >O-</td>
+      <td id="T_3d02f_row2_col1" class="data row2 col1" >21</td>
+      <td id="T_3d02f_row2_col2" class="data row2 col2" >1.580000</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
-<p><strong>Recalculación de variables numéricas</strong></p>
 <p><strong><code class="docutils literal notranslate"><span class="pre">IMC</span></code>:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2509,39 +2772,39 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_58805">
+<table id="T_dc664">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_58805_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_58805_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_58805_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_dc664_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_dc664_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_dc664_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_58805_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_58805_row0_col0" class="data row0 col0" >Normal</td>
-      <td id="T_58805_row0_col1" class="data row0 col1" >450</td>
-      <td id="T_58805_row0_col2" class="data row0 col2" >33.910000</td>
+      <th id="T_dc664_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_dc664_row0_col0" class="data row0 col0" >Normal</td>
+      <td id="T_dc664_row0_col1" class="data row0 col1" >450</td>
+      <td id="T_dc664_row0_col2" class="data row0 col2" >33.910000</td>
     </tr>
     <tr>
-      <th id="T_58805_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_58805_row1_col0" class="data row1 col0" >Alto</td>
-      <td id="T_58805_row1_col1" class="data row1 col1" >431</td>
-      <td id="T_58805_row1_col2" class="data row1 col2" >32.480000</td>
+      <th id="T_dc664_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_dc664_row1_col0" class="data row1 col0" >Alto</td>
+      <td id="T_dc664_row1_col1" class="data row1 col1" >431</td>
+      <td id="T_dc664_row1_col2" class="data row1 col2" >32.480000</td>
     </tr>
     <tr>
-      <th id="T_58805_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_58805_row2_col0" class="data row2 col0" >Obesidad</td>
-      <td id="T_58805_row2_col1" class="data row2 col1" >351</td>
-      <td id="T_58805_row2_col2" class="data row2 col2" >26.450000</td>
+      <th id="T_dc664_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_dc664_row2_col0" class="data row2 col0" >Obesidad</td>
+      <td id="T_dc664_row2_col1" class="data row2 col1" >351</td>
+      <td id="T_dc664_row2_col2" class="data row2 col2" >26.450000</td>
     </tr>
     <tr>
-      <th id="T_58805_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_58805_row3_col0" class="data row3 col0" >Bajo</td>
-      <td id="T_58805_row3_col1" class="data row3 col1" >95</td>
-      <td id="T_58805_row3_col2" class="data row3 col2" >7.160000</td>
+      <th id="T_dc664_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_dc664_row3_col0" class="data row3 col0" >Bajo</td>
+      <td id="T_dc664_row3_col1" class="data row3 col1" >95</td>
+      <td id="T_dc664_row3_col2" class="data row3 col2" >7.160000</td>
     </tr>
   </tbody>
 </table>
@@ -2666,51 +2929,51 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_d98e4">
+<table id="T_80d0d">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d98e4_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_d98e4_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_d98e4_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_80d0d_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_80d0d_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_80d0d_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_d98e4_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_d98e4_row0_col0" class="data row0 col0" >nan</td>
-      <td id="T_d98e4_row0_col1" class="data row0 col1" >861</td>
-      <td id="T_d98e4_row0_col2" class="data row0 col2" >64.880000</td>
+      <th id="T_80d0d_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_80d0d_row0_col0" class="data row0 col0" >nan</td>
+      <td id="T_80d0d_row0_col1" class="data row0 col1" >861</td>
+      <td id="T_80d0d_row0_col2" class="data row0 col2" >64.880000</td>
     </tr>
     <tr>
-      <th id="T_d98e4_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_d98e4_row1_col0" class="data row1 col0" >G3: Descenso Moderado (30-59)</td>
-      <td id="T_d98e4_row1_col1" class="data row1 col1" >177</td>
-      <td id="T_d98e4_row1_col2" class="data row1 col2" >13.340000</td>
+      <th id="T_80d0d_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_80d0d_row1_col0" class="data row1 col0" >G3: Descenso Moderado (30-59)</td>
+      <td id="T_80d0d_row1_col1" class="data row1 col1" >177</td>
+      <td id="T_80d0d_row1_col2" class="data row1 col2" >13.340000</td>
     </tr>
     <tr>
-      <th id="T_d98e4_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_d98e4_row2_col0" class="data row2 col0" >G2: Descenso Leve (60-89)</td>
-      <td id="T_d98e4_row2_col1" class="data row2 col1" >149</td>
-      <td id="T_d98e4_row2_col2" class="data row2 col2" >11.230000</td>
+      <th id="T_80d0d_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_80d0d_row2_col0" class="data row2 col0" >G2: Descenso Leve (60-89)</td>
+      <td id="T_80d0d_row2_col1" class="data row2 col1" >149</td>
+      <td id="T_80d0d_row2_col2" class="data row2 col2" >11.230000</td>
     </tr>
     <tr>
-      <th id="T_d98e4_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_d98e4_row3_col0" class="data row3 col0" >G1: Normal o Elevado (≥90)</td>
-      <td id="T_d98e4_row3_col1" class="data row3 col1" >136</td>
-      <td id="T_d98e4_row3_col2" class="data row3 col2" >10.250000</td>
+      <th id="T_80d0d_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_80d0d_row3_col0" class="data row3 col0" >G1: Normal o Elevado (≥90)</td>
+      <td id="T_80d0d_row3_col1" class="data row3 col1" >136</td>
+      <td id="T_80d0d_row3_col2" class="data row3 col2" >10.250000</td>
     </tr>
     <tr>
-      <th id="T_d98e4_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_d98e4_row4_col0" class="data row4 col0" >G4: Descenso Grave (15-29)</td>
-      <td id="T_d98e4_row4_col1" class="data row4 col1" >4</td>
-      <td id="T_d98e4_row4_col2" class="data row4 col2" >0.300000</td>
+      <th id="T_80d0d_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_80d0d_row4_col0" class="data row4 col0" >G4: Descenso Grave (15-29)</td>
+      <td id="T_80d0d_row4_col1" class="data row4 col1" >4</td>
+      <td id="T_80d0d_row4_col2" class="data row4 col2" >0.300000</td>
     </tr>
     <tr>
-      <th id="T_d98e4_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_d98e4_row5_col0" class="data row5 col0" >G5: Falla Renal (<15)</td>
-      <td id="T_d98e4_row5_col1" class="data row5 col1" >0</td>
-      <td id="T_d98e4_row5_col2" class="data row5 col2" >0.000000</td>
+      <th id="T_80d0d_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_80d0d_row5_col0" class="data row5 col0" >G5: Falla Renal (<15)</td>
+      <td id="T_80d0d_row5_col1" class="data row5 col1" >0</td>
+      <td id="T_80d0d_row5_col2" class="data row5 col2" >0.000000</td>
     </tr>
   </tbody>
 </table>
@@ -2732,7 +2995,7 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_4660\196292477.py:3: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_28812\196292477.py:3: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
   df[&#39;Estadio_ERC_Binaria&#39;] = df[&#39;Estadio_ERC_Binaria&#39;].replace({
 </pre></div>
 </div>
@@ -2747,33 +3010,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_800c0">
+<table id="T_6e8e8">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_800c0_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_800c0_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_800c0_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_6e8e8_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_6e8e8_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_6e8e8_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_800c0_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_800c0_row0_col0" class="data row0 col0" >nan</td>
-      <td id="T_800c0_row0_col1" class="data row0 col1" >861</td>
-      <td id="T_800c0_row0_col2" class="data row0 col2" >64.880000</td>
+      <th id="T_6e8e8_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_6e8e8_row0_col0" class="data row0 col0" >nan</td>
+      <td id="T_6e8e8_row0_col1" class="data row0 col1" >861</td>
+      <td id="T_6e8e8_row0_col2" class="data row0 col2" >64.880000</td>
     </tr>
     <tr>
-      <th id="T_800c0_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_800c0_row1_col0" class="data row1 col0" >No moderado</td>
-      <td id="T_800c0_row1_col1" class="data row1 col1" >285</td>
-      <td id="T_800c0_row1_col2" class="data row1 col2" >21.480000</td>
+      <th id="T_6e8e8_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_6e8e8_row1_col0" class="data row1 col0" >No moderado</td>
+      <td id="T_6e8e8_row1_col1" class="data row1 col1" >285</td>
+      <td id="T_6e8e8_row1_col2" class="data row1 col2" >21.480000</td>
     </tr>
     <tr>
-      <th id="T_800c0_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_800c0_row2_col0" class="data row2 col0" >Moderado</td>
-      <td id="T_800c0_row2_col1" class="data row2 col1" >181</td>
-      <td id="T_800c0_row2_col2" class="data row2 col2" >13.640000</td>
+      <th id="T_6e8e8_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_6e8e8_row2_col0" class="data row2 col0" >Moderado</td>
+      <td id="T_6e8e8_row2_col1" class="data row2 col1" >181</td>
+      <td id="T_6e8e8_row2_col2" class="data row2 col2" >13.640000</td>
     </tr>
   </tbody>
 </table>
@@ -2826,27 +3089,27 @@ Name: Edad, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_ad792">
+<table id="T_734d6">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_ad792_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_ad792_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_ad792_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_734d6_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_734d6_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_734d6_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_ad792_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_ad792_row0_col0" class="data row0 col0" >Femenino</td>
-      <td id="T_ad792_row0_col1" class="data row0 col1" >850</td>
-      <td id="T_ad792_row0_col2" class="data row0 col2" >64.050000</td>
+      <th id="T_734d6_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_734d6_row0_col0" class="data row0 col0" >Femenino</td>
+      <td id="T_734d6_row0_col1" class="data row0 col1" >850</td>
+      <td id="T_734d6_row0_col2" class="data row0 col2" >64.050000</td>
     </tr>
     <tr>
-      <th id="T_ad792_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_ad792_row1_col0" class="data row1 col0" >Masculino</td>
-      <td id="T_ad792_row1_col1" class="data row1 col1" >477</td>
-      <td id="T_ad792_row1_col2" class="data row1 col2" >35.950000</td>
+      <th id="T_734d6_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_734d6_row1_col0" class="data row1 col0" >Masculino</td>
+      <td id="T_734d6_row1_col1" class="data row1 col1" >477</td>
+      <td id="T_734d6_row1_col2" class="data row1 col2" >35.950000</td>
     </tr>
   </tbody>
 </table>
@@ -2862,27 +3125,27 @@ Name: Edad, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_f8b6d">
+<table id="T_d7bd1">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_f8b6d_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_f8b6d_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_f8b6d_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_d7bd1_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_d7bd1_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_d7bd1_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_f8b6d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_f8b6d_row0_col0" class="data row0 col0" >Negativo</td>
-      <td id="T_f8b6d_row0_col1" class="data row0 col1" >1001</td>
-      <td id="T_f8b6d_row0_col2" class="data row0 col2" >75.430000</td>
+      <th id="T_d7bd1_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_d7bd1_row0_col0" class="data row0 col0" >Negativo</td>
+      <td id="T_d7bd1_row0_col1" class="data row0 col1" >1001</td>
+      <td id="T_d7bd1_row0_col2" class="data row0 col2" >75.430000</td>
     </tr>
     <tr>
-      <th id="T_f8b6d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_f8b6d_row1_col0" class="data row1 col0" >Positiva</td>
-      <td id="T_f8b6d_row1_col1" class="data row1 col1" >326</td>
-      <td id="T_f8b6d_row1_col2" class="data row1 col2" >24.570000</td>
+      <th id="T_d7bd1_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_d7bd1_row1_col0" class="data row1 col0" >Positiva</td>
+      <td id="T_d7bd1_row1_col1" class="data row1 col1" >326</td>
+      <td id="T_d7bd1_row1_col2" class="data row1 col2" >24.570000</td>
     </tr>
   </tbody>
 </table>
@@ -3718,7 +3981,7 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\tableone\formatting.p
   <th>Date:</th>            <td>Tue, 14 Apr 2026</td> <th>  Pseudo R-squ.:     </th>  <td>0.1487</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>10:27:06</td>     <th>  Log-Likelihood:    </th> <td> -629.86</td> 
+  <th>Time:</th>                <td>12:20:44</td>     <th>  Log-Likelihood:    </th> <td> -629.86</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -739.84</td> 
@@ -4378,9 +4641,9 @@ Categories (2, object): [&#39;Moderado&#39; &lt; &#39;No moderado&#39;]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_4660\2609554632.py:1: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_28812\2609554632.py:1: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
   df_reg[&#39;Estadio_ERC_Binaria&#39;] = df_reg[&#39;Estadio_ERC_Binaria&#39;].replace({
-C:\Users\Mari\AppData\Local\Temp\ipykernel_4660\2609554632.py:1: SettingWithCopyWarning: 
+C:\Users\Mari\AppData\Local\Temp\ipykernel_28812\2609554632.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -4397,7 +4660,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_4660\2739287522.py:1: SettingWithCopyWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_28812\2739287522.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -4421,7 +4684,9 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
-         Current function value: 0.623950
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         Current function value: 0.623950
          Iterations 5
 </pre></div>
 </div>
@@ -4440,7 +4705,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   <th>Date:</th>             <td>Tue, 14 Apr 2026</td>   <th>  Pseudo R-squ.:     </th>  <td>0.09429</td> 
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:27:06</td>       <th>  Log-Likelihood:    </th> <td> -203.41</td> 
+  <th>Time:</th>                 <td>12:20:45</td>       <th>  Log-Likelihood:    </th> <td> -203.41</td> 
 </tr>
 <tr>
   <th>converged:</th>              <td>True</td>         <th>  LL-Null:           </th> <td> -224.58</td> 
@@ -4745,6 +5010,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources"><strong>Data Sources</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-registros-duplicados"><strong>Verificación de registros duplicados:</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-lugares-de-tamizajes"><strong>Verificación de lugares de tamizajes</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagrama-de-flujo-limpieza-de-datos"><strong>Diagrama de Flujo Limpieza de Datos</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manipulacion-de-la-base-de-datos-segun-recomendaciones"><strong>Manipulación de la base de datos según recomendaciones:</strong></a></li>
 </ul>
 </li>
