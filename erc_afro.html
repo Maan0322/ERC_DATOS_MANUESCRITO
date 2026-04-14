@@ -2180,25 +2180,27 @@ El número de personas menores de 18 años es 13
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span>
 
-<span class="n">dot</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Flujo de Limpieza de Datos&#39;</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Data Cleaning Workflow&#39;</span><span class="p">)</span>
 <span class="n">dot</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;TB&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;8,5&#39;</span><span class="p">)</span>
 
-<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Base de Datos Clínica</span><span class="se">\n</span><span class="s1">(n = 1357)&#39;</span><span class="p">)</span>
-<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Eliminación de Duplicados</span><span class="se">\n</span><span class="s1">(n = 1356)&#39;</span><span class="p">)</span>
-<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;Exclusión por Edad (&lt; 18 años)</span><span class="se">\n</span><span class="s1">(n = 1343)&#39;</span><span class="p">)</span>
-<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Muestra Final Consolidada</span><span class="se">\n</span><span class="s1">(n = 1327)&#39;</span><span class="p">)</span>
+<span class="c1"># Nodes - Using &quot;Records&quot; and &quot;Observations&quot; for technical precision</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial Clinical Database</span><span class="se">\n</span><span class="s1">(n = 1,357)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Post-Duplicate Removal</span><span class="se">\n</span><span class="s1">(n = 1,356)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;Adult Population Screening (≥18 years)</span><span class="se">\n</span><span class="s1">(n = 1,343)&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Final Consolidated Sample</span><span class="se">\n</span><span class="s1">(n = 1,327)&#39;</span><span class="p">)</span>
 
-<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -1 duplicado&#39;</span><span class="p">)</span>
-<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -13 menores de edad&#39;</span><span class="p">)</span>
-<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;-16 registros:</span><span class="se">\n</span><span class="s1">(1 Régimen, 5 Peso &lt; 35kg,</span><span class="se">\n</span><span class="s1">10 IMC &lt; 15kg/m² exclusivos)&#39;</span><span class="p">)</span>
+<span class="c1"># Edges - Using clear exclusion labels</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -1 duplicate record&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39; -13 minors excluded&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;-16 records excluded:</span><span class="se">\n</span><span class="s1">(1 Missing Health Scheme, 5 Weight &lt; 35kg,</span><span class="se">\n</span><span class="s1">10 Exclusive BMI &lt; 15kg/m²)&#39;</span><span class="p">)</span>
 
-<span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;flujo_limpieza&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;data_cleaning_flow&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">dot</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ab075961d8c03621271d4045daaee15ed44d7be94b645d34d5bb873ee73cf07.svg" src="_images/6ab075961d8c03621271d4045daaee15ed44d7be94b645d34d5bb873ee73cf07.svg" /></div>
+<img alt="_images/a18a0032d53afcd4903e6fd6373099ed58ae9a3f9bf308e2b31b561b115b5651.svg" src="_images/a18a0032d53afcd4903e6fd6373099ed58ae9a3f9bf308e2b31b561b115b5651.svg" /></div>
 </div>
 </section>
 <section id="manipulacion-de-la-base-de-datos-segun-recomendaciones">
@@ -2342,33 +2344,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_edad2">
+<table id="T_2e1dc">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_edad2_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_edad2_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_edad2_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_2e1dc_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_2e1dc_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_2e1dc_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_edad2_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_edad2_row0_col0" class="data row0 col0" >Secundaria-Bachiller</td>
-      <td id="T_edad2_row0_col1" class="data row0 col1" >467</td>
-      <td id="T_edad2_row0_col2" class="data row0 col2" >35.190000</td>
+      <th id="T_2e1dc_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_2e1dc_row0_col0" class="data row0 col0" >Secundaria-Bachiller</td>
+      <td id="T_2e1dc_row0_col1" class="data row0 col1" >467</td>
+      <td id="T_2e1dc_row0_col2" class="data row0 col2" >35.190000</td>
     </tr>
     <tr>
-      <th id="T_edad2_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_edad2_row1_col0" class="data row1 col0" >No_escolarizado-Primaria</td>
-      <td id="T_edad2_row1_col1" class="data row1 col1" >458</td>
-      <td id="T_edad2_row1_col2" class="data row1 col2" >34.510000</td>
+      <th id="T_2e1dc_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_2e1dc_row1_col0" class="data row1 col0" >No_escolarizado-Primaria</td>
+      <td id="T_2e1dc_row1_col1" class="data row1 col1" >458</td>
+      <td id="T_2e1dc_row1_col2" class="data row1 col2" >34.510000</td>
     </tr>
     <tr>
-      <th id="T_edad2_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_edad2_row2_col0" class="data row2 col0" >Educación_Superior</td>
-      <td id="T_edad2_row2_col1" class="data row2 col1" >402</td>
-      <td id="T_edad2_row2_col2" class="data row2 col2" >30.290000</td>
+      <th id="T_2e1dc_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_2e1dc_row2_col0" class="data row2 col0" >Educación_Superior</td>
+      <td id="T_2e1dc_row2_col1" class="data row2 col1" >402</td>
+      <td id="T_2e1dc_row2_col2" class="data row2 col2" >30.290000</td>
     </tr>
   </tbody>
 </table>
@@ -2395,27 +2397,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_8e56c">
+<table id="T_9b123">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_8e56c_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_8e56c_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_8e56c_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_9b123_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_9b123_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_9b123_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_8e56c_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_8e56c_row0_col0" class="data row0 col0" >Subsidiado-No_Tiene</td>
-      <td id="T_8e56c_row0_col1" class="data row0 col1" >971</td>
-      <td id="T_8e56c_row0_col2" class="data row0 col2" >73.170000</td>
+      <th id="T_9b123_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_9b123_row0_col0" class="data row0 col0" >Subsidiado-No_Tiene</td>
+      <td id="T_9b123_row0_col1" class="data row0 col1" >971</td>
+      <td id="T_9b123_row0_col2" class="data row0 col2" >73.170000</td>
     </tr>
     <tr>
-      <th id="T_8e56c_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_8e56c_row1_col0" class="data row1 col0" >Contributivo-Especial</td>
-      <td id="T_8e56c_row1_col1" class="data row1 col1" >356</td>
-      <td id="T_8e56c_row1_col2" class="data row1 col2" >26.830000</td>
+      <th id="T_9b123_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_9b123_row1_col0" class="data row1 col0" >Contributivo-Especial</td>
+      <td id="T_9b123_row1_col1" class="data row1 col1" >356</td>
+      <td id="T_9b123_row1_col2" class="data row1 col2" >26.830000</td>
     </tr>
   </tbody>
 </table>
@@ -2443,33 +2445,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_242dc">
+<table id="T_fd498">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_242dc_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_242dc_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_242dc_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_fd498_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_fd498_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_fd498_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_242dc_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_242dc_row0_col0" class="data row0 col0" >Consumo adecuado</td>
-      <td id="T_242dc_row0_col1" class="data row0 col1" >763</td>
-      <td id="T_242dc_row0_col2" class="data row0 col2" >57.500000</td>
+      <th id="T_fd498_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_fd498_row0_col0" class="data row0 col0" >Consumo adecuado</td>
+      <td id="T_fd498_row0_col1" class="data row0 col1" >763</td>
+      <td id="T_fd498_row0_col2" class="data row0 col2" >57.500000</td>
     </tr>
     <tr>
-      <th id="T_242dc_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_242dc_row1_col0" class="data row1 col0" >No toma nada</td>
-      <td id="T_242dc_row1_col1" class="data row1 col1" >508</td>
-      <td id="T_242dc_row1_col2" class="data row1 col2" >38.280000</td>
+      <th id="T_fd498_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_fd498_row1_col0" class="data row1 col0" >No toma nada</td>
+      <td id="T_fd498_row1_col1" class="data row1 col1" >508</td>
+      <td id="T_fd498_row1_col2" class="data row1 col2" >38.280000</td>
     </tr>
     <tr>
-      <th id="T_242dc_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_242dc_row2_col0" class="data row2 col0" >Consumo elevado</td>
-      <td id="T_242dc_row2_col1" class="data row2 col1" >56</td>
-      <td id="T_242dc_row2_col2" class="data row2 col2" >4.220000</td>
+      <th id="T_fd498_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_fd498_row2_col0" class="data row2 col0" >Consumo elevado</td>
+      <td id="T_fd498_row2_col1" class="data row2 col1" >56</td>
+      <td id="T_fd498_row2_col2" class="data row2 col2" >4.220000</td>
     </tr>
   </tbody>
 </table>
@@ -2497,45 +2499,45 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_7cf5a">
+<table id="T_86b22">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_7cf5a_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_7cf5a_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_7cf5a_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_86b22_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_86b22_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_86b22_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_7cf5a_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_7cf5a_row0_col0" class="data row0 col0" >Nunca</td>
-      <td id="T_7cf5a_row0_col1" class="data row0 col1" >876</td>
-      <td id="T_7cf5a_row0_col2" class="data row0 col2" >66.010000</td>
+      <th id="T_86b22_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_86b22_row0_col0" class="data row0 col0" >Nunca</td>
+      <td id="T_86b22_row0_col1" class="data row0 col1" >876</td>
+      <td id="T_86b22_row0_col2" class="data row0 col2" >66.010000</td>
     </tr>
     <tr>
-      <th id="T_7cf5a_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_7cf5a_row1_col0" class="data row1 col0" >Consumo_Ocasional</td>
-      <td id="T_7cf5a_row1_col1" class="data row1 col1" >349</td>
-      <td id="T_7cf5a_row1_col2" class="data row1 col2" >26.300000</td>
+      <th id="T_86b22_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_86b22_row1_col0" class="data row1 col0" >Consumo_Ocasional</td>
+      <td id="T_86b22_row1_col1" class="data row1 col1" >349</td>
+      <td id="T_86b22_row1_col2" class="data row1 col2" >26.300000</td>
     </tr>
     <tr>
-      <th id="T_7cf5a_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_7cf5a_row2_col0" class="data row2 col0" >Consumo_Frecuente</td>
-      <td id="T_7cf5a_row2_col1" class="data row2 col1" >96</td>
-      <td id="T_7cf5a_row2_col2" class="data row2 col2" >7.230000</td>
+      <th id="T_86b22_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_86b22_row2_col0" class="data row2 col0" >Consumo_Frecuente</td>
+      <td id="T_86b22_row2_col1" class="data row2 col1" >96</td>
+      <td id="T_86b22_row2_col2" class="data row2 col2" >7.230000</td>
     </tr>
     <tr>
-      <th id="T_7cf5a_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_7cf5a_row3_col0" class="data row3 col0" >Consumo_Habitual</td>
-      <td id="T_7cf5a_row3_col1" class="data row3 col1" >5</td>
-      <td id="T_7cf5a_row3_col2" class="data row3 col2" >0.380000</td>
+      <th id="T_86b22_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_86b22_row3_col0" class="data row3 col0" >Consumo_Habitual</td>
+      <td id="T_86b22_row3_col1" class="data row3 col1" >5</td>
+      <td id="T_86b22_row3_col2" class="data row3 col2" >0.380000</td>
     </tr>
     <tr>
-      <th id="T_7cf5a_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_7cf5a_row4_col0" class="data row4 col0" >Casi diario</td>
-      <td id="T_7cf5a_row4_col1" class="data row4 col1" >1</td>
-      <td id="T_7cf5a_row4_col2" class="data row4 col2" >0.080000</td>
+      <th id="T_86b22_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_86b22_row4_col0" class="data row4 col0" >Casi diario</td>
+      <td id="T_86b22_row4_col1" class="data row4 col1" >1</td>
+      <td id="T_86b22_row4_col2" class="data row4 col2" >0.080000</td>
     </tr>
   </tbody>
 </table>
@@ -2566,33 +2568,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_d772d">
+<table id="T_91be5">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d772d_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_d772d_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_d772d_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_91be5_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_91be5_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_91be5_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_d772d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_d772d_row0_col0" class="data row0 col0" >Atención tardía</td>
-      <td id="T_d772d_row0_col1" class="data row0 col1" >546</td>
-      <td id="T_d772d_row0_col2" class="data row0 col2" >41.150000</td>
+      <th id="T_91be5_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_91be5_row0_col0" class="data row0 col0" >Atención tardía</td>
+      <td id="T_91be5_row0_col1" class="data row0 col1" >546</td>
+      <td id="T_91be5_row0_col2" class="data row0 col2" >41.150000</td>
     </tr>
     <tr>
-      <th id="T_d772d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_d772d_row1_col0" class="data row1 col0" >Atención intermedia</td>
-      <td id="T_d772d_row1_col1" class="data row1 col1" >429</td>
-      <td id="T_d772d_row1_col2" class="data row1 col2" >32.330000</td>
+      <th id="T_91be5_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_91be5_row1_col0" class="data row1 col0" >Atención intermedia</td>
+      <td id="T_91be5_row1_col1" class="data row1 col1" >429</td>
+      <td id="T_91be5_row1_col2" class="data row1 col2" >32.330000</td>
     </tr>
     <tr>
-      <th id="T_d772d_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_d772d_row2_col0" class="data row2 col0" >Atención reciente</td>
-      <td id="T_d772d_row2_col1" class="data row2 col1" >352</td>
-      <td id="T_d772d_row2_col2" class="data row2 col2" >26.530000</td>
+      <th id="T_91be5_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_91be5_row2_col0" class="data row2 col0" >Atención reciente</td>
+      <td id="T_91be5_row2_col1" class="data row2 col1" >352</td>
+      <td id="T_91be5_row2_col2" class="data row2 col2" >26.530000</td>
     </tr>
   </tbody>
 </table>
@@ -2620,27 +2622,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_181d3">
+<table id="T_1e842">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_181d3_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_181d3_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_181d3_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_1e842_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_1e842_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_1e842_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_181d3_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_181d3_row0_col0" class="data row0 col0" >Sin dificultad</td>
-      <td id="T_181d3_row0_col1" class="data row0 col1" >811</td>
-      <td id="T_181d3_row0_col2" class="data row0 col2" >61.120000</td>
+      <th id="T_1e842_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_1e842_row0_col0" class="data row0 col0" >Sin dificultad</td>
+      <td id="T_1e842_row0_col1" class="data row0 col1" >811</td>
+      <td id="T_1e842_row0_col2" class="data row0 col2" >61.120000</td>
     </tr>
     <tr>
-      <th id="T_181d3_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_181d3_row1_col0" class="data row1 col0" >Con dificultad</td>
-      <td id="T_181d3_row1_col1" class="data row1 col1" >516</td>
-      <td id="T_181d3_row1_col2" class="data row1 col2" >38.880000</td>
+      <th id="T_1e842_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_1e842_row1_col0" class="data row1 col0" >Con dificultad</td>
+      <td id="T_1e842_row1_col1" class="data row1 col1" >516</td>
+      <td id="T_1e842_row1_col2" class="data row1 col2" >38.880000</td>
     </tr>
   </tbody>
 </table>
@@ -2670,27 +2672,27 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_2cc38">
+<table id="T_2f2d2">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_2cc38_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_2cc38_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_2cc38_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_2f2d2_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_2f2d2_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_2f2d2_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_2cc38_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_2cc38_row0_col0" class="data row0 col0" >Medicina General</td>
-      <td id="T_2cc38_row0_col1" class="data row0 col1" >1120</td>
-      <td id="T_2cc38_row0_col2" class="data row0 col2" >84.400000</td>
+      <th id="T_2f2d2_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_2f2d2_row0_col0" class="data row0 col0" >Medicina General</td>
+      <td id="T_2f2d2_row0_col1" class="data row0 col1" >1120</td>
+      <td id="T_2f2d2_row0_col2" class="data row0 col2" >84.400000</td>
     </tr>
     <tr>
-      <th id="T_2cc38_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_2cc38_row1_col0" class="data row1 col0" >Especialista</td>
-      <td id="T_2cc38_row1_col1" class="data row1 col1" >207</td>
-      <td id="T_2cc38_row1_col2" class="data row1 col2" >15.600000</td>
+      <th id="T_2f2d2_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_2f2d2_row1_col0" class="data row1 col0" >Especialista</td>
+      <td id="T_2f2d2_row1_col1" class="data row1 col1" >207</td>
+      <td id="T_2f2d2_row1_col2" class="data row1 col2" >15.600000</td>
     </tr>
   </tbody>
 </table>
@@ -2719,33 +2721,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_3e758">
+<table id="T_6c51b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_3e758_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_3e758_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_3e758_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_6c51b_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_6c51b_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_6c51b_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_3e758_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_3e758_row0_col0" class="data row0 col0" >O+</td>
-      <td id="T_3e758_row0_col1" class="data row0 col1" >847</td>
-      <td id="T_3e758_row0_col2" class="data row0 col2" >63.830000</td>
+      <th id="T_6c51b_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_6c51b_row0_col0" class="data row0 col0" >O+</td>
+      <td id="T_6c51b_row0_col1" class="data row0 col1" >847</td>
+      <td id="T_6c51b_row0_col2" class="data row0 col2" >63.830000</td>
     </tr>
     <tr>
-      <th id="T_3e758_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_3e758_row1_col0" class="data row1 col0" >No O</td>
-      <td id="T_3e758_row1_col1" class="data row1 col1" >459</td>
-      <td id="T_3e758_row1_col2" class="data row1 col2" >34.590000</td>
+      <th id="T_6c51b_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_6c51b_row1_col0" class="data row1 col0" >No O</td>
+      <td id="T_6c51b_row1_col1" class="data row1 col1" >459</td>
+      <td id="T_6c51b_row1_col2" class="data row1 col2" >34.590000</td>
     </tr>
     <tr>
-      <th id="T_3e758_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_3e758_row2_col0" class="data row2 col0" >O-</td>
-      <td id="T_3e758_row2_col1" class="data row2 col1" >21</td>
-      <td id="T_3e758_row2_col2" class="data row2 col2" >1.580000</td>
+      <th id="T_6c51b_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_6c51b_row2_col0" class="data row2 col0" >O-</td>
+      <td id="T_6c51b_row2_col1" class="data row2 col1" >21</td>
+      <td id="T_6c51b_row2_col2" class="data row2 col2" >1.580000</td>
     </tr>
   </tbody>
 </table>
@@ -2772,39 +2774,39 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_00db6">
+<table id="T_69150">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_00db6_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_00db6_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_00db6_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_69150_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_69150_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_69150_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_00db6_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_00db6_row0_col0" class="data row0 col0" >Normal</td>
-      <td id="T_00db6_row0_col1" class="data row0 col1" >450</td>
-      <td id="T_00db6_row0_col2" class="data row0 col2" >33.910000</td>
+      <th id="T_69150_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_69150_row0_col0" class="data row0 col0" >Normal</td>
+      <td id="T_69150_row0_col1" class="data row0 col1" >450</td>
+      <td id="T_69150_row0_col2" class="data row0 col2" >33.910000</td>
     </tr>
     <tr>
-      <th id="T_00db6_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_00db6_row1_col0" class="data row1 col0" >Alto</td>
-      <td id="T_00db6_row1_col1" class="data row1 col1" >431</td>
-      <td id="T_00db6_row1_col2" class="data row1 col2" >32.480000</td>
+      <th id="T_69150_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_69150_row1_col0" class="data row1 col0" >Alto</td>
+      <td id="T_69150_row1_col1" class="data row1 col1" >431</td>
+      <td id="T_69150_row1_col2" class="data row1 col2" >32.480000</td>
     </tr>
     <tr>
-      <th id="T_00db6_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_00db6_row2_col0" class="data row2 col0" >Obesidad</td>
-      <td id="T_00db6_row2_col1" class="data row2 col1" >351</td>
-      <td id="T_00db6_row2_col2" class="data row2 col2" >26.450000</td>
+      <th id="T_69150_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_69150_row2_col0" class="data row2 col0" >Obesidad</td>
+      <td id="T_69150_row2_col1" class="data row2 col1" >351</td>
+      <td id="T_69150_row2_col2" class="data row2 col2" >26.450000</td>
     </tr>
     <tr>
-      <th id="T_00db6_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_00db6_row3_col0" class="data row3 col0" >Bajo</td>
-      <td id="T_00db6_row3_col1" class="data row3 col1" >95</td>
-      <td id="T_00db6_row3_col2" class="data row3 col2" >7.160000</td>
+      <th id="T_69150_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_69150_row3_col0" class="data row3 col0" >Bajo</td>
+      <td id="T_69150_row3_col1" class="data row3 col1" >95</td>
+      <td id="T_69150_row3_col2" class="data row3 col2" >7.160000</td>
     </tr>
   </tbody>
 </table>
@@ -2929,51 +2931,51 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_323d4">
+<table id="T_b1b21">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_323d4_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_323d4_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_323d4_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_b1b21_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_b1b21_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_b1b21_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_323d4_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_323d4_row0_col0" class="data row0 col0" >nan</td>
-      <td id="T_323d4_row0_col1" class="data row0 col1" >861</td>
-      <td id="T_323d4_row0_col2" class="data row0 col2" >64.880000</td>
+      <th id="T_b1b21_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_b1b21_row0_col0" class="data row0 col0" >nan</td>
+      <td id="T_b1b21_row0_col1" class="data row0 col1" >861</td>
+      <td id="T_b1b21_row0_col2" class="data row0 col2" >64.880000</td>
     </tr>
     <tr>
-      <th id="T_323d4_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_323d4_row1_col0" class="data row1 col0" >G3: Descenso Moderado (30-59)</td>
-      <td id="T_323d4_row1_col1" class="data row1 col1" >177</td>
-      <td id="T_323d4_row1_col2" class="data row1 col2" >13.340000</td>
+      <th id="T_b1b21_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_b1b21_row1_col0" class="data row1 col0" >G3: Descenso Moderado (30-59)</td>
+      <td id="T_b1b21_row1_col1" class="data row1 col1" >177</td>
+      <td id="T_b1b21_row1_col2" class="data row1 col2" >13.340000</td>
     </tr>
     <tr>
-      <th id="T_323d4_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_323d4_row2_col0" class="data row2 col0" >G2: Descenso Leve (60-89)</td>
-      <td id="T_323d4_row2_col1" class="data row2 col1" >149</td>
-      <td id="T_323d4_row2_col2" class="data row2 col2" >11.230000</td>
+      <th id="T_b1b21_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_b1b21_row2_col0" class="data row2 col0" >G2: Descenso Leve (60-89)</td>
+      <td id="T_b1b21_row2_col1" class="data row2 col1" >149</td>
+      <td id="T_b1b21_row2_col2" class="data row2 col2" >11.230000</td>
     </tr>
     <tr>
-      <th id="T_323d4_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_323d4_row3_col0" class="data row3 col0" >G1: Normal o Elevado (≥90)</td>
-      <td id="T_323d4_row3_col1" class="data row3 col1" >136</td>
-      <td id="T_323d4_row3_col2" class="data row3 col2" >10.250000</td>
+      <th id="T_b1b21_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_b1b21_row3_col0" class="data row3 col0" >G1: Normal o Elevado (≥90)</td>
+      <td id="T_b1b21_row3_col1" class="data row3 col1" >136</td>
+      <td id="T_b1b21_row3_col2" class="data row3 col2" >10.250000</td>
     </tr>
     <tr>
-      <th id="T_323d4_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_323d4_row4_col0" class="data row4 col0" >G4: Descenso Grave (15-29)</td>
-      <td id="T_323d4_row4_col1" class="data row4 col1" >4</td>
-      <td id="T_323d4_row4_col2" class="data row4 col2" >0.300000</td>
+      <th id="T_b1b21_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_b1b21_row4_col0" class="data row4 col0" >G4: Descenso Grave (15-29)</td>
+      <td id="T_b1b21_row4_col1" class="data row4 col1" >4</td>
+      <td id="T_b1b21_row4_col2" class="data row4 col2" >0.300000</td>
     </tr>
     <tr>
-      <th id="T_323d4_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_323d4_row5_col0" class="data row5 col0" >G5: Falla Renal (<15)</td>
-      <td id="T_323d4_row5_col1" class="data row5 col1" >0</td>
-      <td id="T_323d4_row5_col2" class="data row5 col2" >0.000000</td>
+      <th id="T_b1b21_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_b1b21_row5_col0" class="data row5 col0" >G5: Falla Renal (<15)</td>
+      <td id="T_b1b21_row5_col1" class="data row5 col1" >0</td>
+      <td id="T_b1b21_row5_col2" class="data row5 col2" >0.000000</td>
     </tr>
   </tbody>
 </table>
@@ -2995,7 +2997,7 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_29436\196292477.py:3: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_11276\196292477.py:3: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
   df[&#39;Estadio_ERC_Binaria&#39;] = df[&#39;Estadio_ERC_Binaria&#39;].replace({
 </pre></div>
 </div>
@@ -3010,33 +3012,33 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\IPython\core\pylabtoo
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_ed89e">
+<table id="T_9ef35">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_ed89e_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_ed89e_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_ed89e_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_9ef35_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_9ef35_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_9ef35_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_ed89e_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_ed89e_row0_col0" class="data row0 col0" >nan</td>
-      <td id="T_ed89e_row0_col1" class="data row0 col1" >861</td>
-      <td id="T_ed89e_row0_col2" class="data row0 col2" >64.880000</td>
+      <th id="T_9ef35_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_9ef35_row0_col0" class="data row0 col0" >nan</td>
+      <td id="T_9ef35_row0_col1" class="data row0 col1" >861</td>
+      <td id="T_9ef35_row0_col2" class="data row0 col2" >64.880000</td>
     </tr>
     <tr>
-      <th id="T_ed89e_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_ed89e_row1_col0" class="data row1 col0" >No moderado</td>
-      <td id="T_ed89e_row1_col1" class="data row1 col1" >285</td>
-      <td id="T_ed89e_row1_col2" class="data row1 col2" >21.480000</td>
+      <th id="T_9ef35_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_9ef35_row1_col0" class="data row1 col0" >No moderado</td>
+      <td id="T_9ef35_row1_col1" class="data row1 col1" >285</td>
+      <td id="T_9ef35_row1_col2" class="data row1 col2" >21.480000</td>
     </tr>
     <tr>
-      <th id="T_ed89e_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_ed89e_row2_col0" class="data row2 col0" >Moderado</td>
-      <td id="T_ed89e_row2_col1" class="data row2 col1" >181</td>
-      <td id="T_ed89e_row2_col2" class="data row2 col2" >13.640000</td>
+      <th id="T_9ef35_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_9ef35_row2_col0" class="data row2 col0" >Moderado</td>
+      <td id="T_9ef35_row2_col1" class="data row2 col1" >181</td>
+      <td id="T_9ef35_row2_col2" class="data row2 col2" >13.640000</td>
     </tr>
   </tbody>
 </table>
@@ -3089,27 +3091,27 @@ Name: Edad, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_d5a37">
+<table id="T_f89a0">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d5a37_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_d5a37_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_d5a37_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_f89a0_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_f89a0_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_f89a0_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_d5a37_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_d5a37_row0_col0" class="data row0 col0" >Femenino</td>
-      <td id="T_d5a37_row0_col1" class="data row0 col1" >850</td>
-      <td id="T_d5a37_row0_col2" class="data row0 col2" >64.050000</td>
+      <th id="T_f89a0_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_f89a0_row0_col0" class="data row0 col0" >Femenino</td>
+      <td id="T_f89a0_row0_col1" class="data row0 col1" >850</td>
+      <td id="T_f89a0_row0_col2" class="data row0 col2" >64.050000</td>
     </tr>
     <tr>
-      <th id="T_d5a37_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_d5a37_row1_col0" class="data row1 col0" >Masculino</td>
-      <td id="T_d5a37_row1_col1" class="data row1 col1" >477</td>
-      <td id="T_d5a37_row1_col2" class="data row1 col2" >35.950000</td>
+      <th id="T_f89a0_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_f89a0_row1_col0" class="data row1 col0" >Masculino</td>
+      <td id="T_f89a0_row1_col1" class="data row1 col1" >477</td>
+      <td id="T_f89a0_row1_col2" class="data row1 col2" >35.950000</td>
     </tr>
   </tbody>
 </table>
@@ -3125,27 +3127,27 @@ Name: Edad, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_4736f">
+<table id="T_d7950">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_4736f_level0_col0" class="col_heading level0 col0" >Categorías</th>
-      <th id="T_4736f_level0_col1" class="col_heading level0 col1" >Conteo</th>
-      <th id="T_4736f_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
+      <th id="T_d7950_level0_col0" class="col_heading level0 col0" >Categorías</th>
+      <th id="T_d7950_level0_col1" class="col_heading level0 col1" >Conteo</th>
+      <th id="T_d7950_level0_col2" class="col_heading level0 col2" >Porcentaje</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_4736f_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_4736f_row0_col0" class="data row0 col0" >Negativo</td>
-      <td id="T_4736f_row0_col1" class="data row0 col1" >1001</td>
-      <td id="T_4736f_row0_col2" class="data row0 col2" >75.430000</td>
+      <th id="T_d7950_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_d7950_row0_col0" class="data row0 col0" >Negativo</td>
+      <td id="T_d7950_row0_col1" class="data row0 col1" >1001</td>
+      <td id="T_d7950_row0_col2" class="data row0 col2" >75.430000</td>
     </tr>
     <tr>
-      <th id="T_4736f_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_4736f_row1_col0" class="data row1 col0" >Positiva</td>
-      <td id="T_4736f_row1_col1" class="data row1 col1" >326</td>
-      <td id="T_4736f_row1_col2" class="data row1 col2" >24.570000</td>
+      <th id="T_d7950_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_d7950_row1_col0" class="data row1 col0" >Positiva</td>
+      <td id="T_d7950_row1_col1" class="data row1 col1" >326</td>
+      <td id="T_d7950_row1_col2" class="data row1 col2" >24.570000</td>
     </tr>
   </tbody>
 </table>
@@ -3450,9 +3452,7 @@ P-valor: 0.8735
 Resultado: No se encontró asociación significativa (independientes).
 
 Tabla de porcentajes por columna (%):
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Medicacion_Diabetes     No     Si
+Medicacion_Diabetes     No     Si
 Tirilla_Reactiva                 
 Negativo             75.52  74.03
 Positiva             24.48  25.97
@@ -3655,9 +3655,7 @@ P-valor: 0.0004
 Resultado: Existe una asociación significativa entre las variables (p &lt; 0.05).
 
 Tabla de porcentajes por columna (%):
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frecuencia_Alcohol  Consume  No_consume
+Frecuencia_Alcohol  Consume  No_consume
 Tirilla_Reactiva                       
 Negativo              81.37       72.37
 Positiva              18.63       27.63
@@ -3680,9 +3678,7 @@ P-valor: 0.0380
 Resultado: Existe una asociación significativa entre las variables (p &lt; 0.05).
 
 Tabla de porcentajes por columna (%):
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uso_Fungicidas       No     Si
+Uso_Fungicidas       No     Si
 Tirilla_Reactiva              
 Negativo          76.01  63.33
 Positiva          23.99  36.67
@@ -3986,7 +3982,7 @@ C:\Users\Mari\miniconda3\envs\deepl_venv\lib\site-packages\tableone\formatting.p
   <th>Date:</th>            <td>Tue, 14 Apr 2026</td> <th>  Pseudo R-squ.:     </th>  <td>0.1487</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>14:35:12</td>     <th>  Log-Likelihood:    </th> <td> -629.86</td> 
+  <th>Time:</th>                <td>14:41:17</td>     <th>  Log-Likelihood:    </th> <td> -629.86</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -739.84</td> 
@@ -4395,7 +4391,9 @@ P-valor: 0.6497
 Resultado: No se encontró asociación significativa (independientes).
 
 Tabla de porcentajes por columna (%):
-Escolaridad          Educación_Superior  No_escolarizado-Primaria  \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Escolaridad          Educación_Superior  No_escolarizado-Primaria  \
 Estadio_ERC_Binaria                                                 
 Moderado                          57.66                     51.11   
 No moderado                       42.34                     48.89   
@@ -4488,9 +4486,7 @@ No moderado          46.26  37.5
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Comparación: Estadio_ERC_Binaria vs Antecedentes_Familiares
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-valor: 0.8530
+P-valor: 0.8530
 Resultado: No se encontró asociación significativa (independientes).
 
 Tabla de porcentajes por columna (%):
@@ -4536,9 +4532,7 @@ No moderado            53.57       42.56
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Comparación: Estadio_ERC_Binaria vs Uso_Fungicidas
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-valor: 1.0000
+P-valor: 1.0000
 Resultado: No se encontró asociación significativa (independientes).
 
 Tabla de porcentajes por columna (%):
@@ -4561,9 +4555,7 @@ No moderado          45.39  45.45
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Análisis para IMC ---
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prueba utilizada: Mann-Whitney U (No Paramétrica)
+Prueba utilizada: Mann-Whitney U (No Paramétrica)
 P-valor: 0.4803
 Resultado: No se encontraron diferencias significativas.
 </pre></div>
@@ -4652,9 +4644,9 @@ Categories (2, object): [&#39;Moderado&#39; &lt; &#39;No moderado&#39;]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_29436\2609554632.py:1: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_11276\2609554632.py:1: FutureWarning: The behavior of Series.replace (and DataFrame.replace) with CategoricalDtype is deprecated. In a future version, replace will only be used for cases that preserve the categories. To change the categories, use ser.cat.rename_categories instead.
   df_reg[&#39;Estadio_ERC_Binaria&#39;] = df_reg[&#39;Estadio_ERC_Binaria&#39;].replace({
-C:\Users\Mari\AppData\Local\Temp\ipykernel_29436\2609554632.py:1: SettingWithCopyWarning: 
+C:\Users\Mari\AppData\Local\Temp\ipykernel_11276\2609554632.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -4671,7 +4663,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_29436\2739287522.py:1: SettingWithCopyWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Mari\AppData\Local\Temp\ipykernel_11276\2739287522.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -4714,7 +4706,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
   <th>Date:</th>             <td>Tue, 14 Apr 2026</td>   <th>  Pseudo R-squ.:     </th>  <td>0.09429</td> 
 </tr>
 <tr>
-  <th>Time:</th>                 <td>14:35:12</td>       <th>  Log-Likelihood:    </th> <td> -203.41</td> 
+  <th>Time:</th>                 <td>14:41:18</td>       <th>  Log-Likelihood:    </th> <td> -203.41</td> 
 </tr>
 <tr>
   <th>converged:</th>              <td>True</td>         <th>  LL-Null:           </th> <td> -224.58</td> 
